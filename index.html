@@ -3768,7 +3768,7 @@
               <option>Current Week</option>
               <option>Previous Week</option>
               <option>Previous Month</option>
-              <option>Quarter</option>
+
               <option>Financial Year</option>
               <option>Custom Range</option>
             </select>
@@ -3793,20 +3793,22 @@
             <!-- <select class="filter-select" id="filterExec_page_sources">
               <option>All Executives</option>
             </select> -->
-            <select class="filter-select" id="filterClass_page_sources">
-              <option>All Sources</option>
+            <!-- <select class="filter-select" id="filterClass_page_sources">
+              <option>All Channel</option>
               <option>Avibuyer</option>
               <option>Cambrian</option>
               <option>Cascade</option>
               <option>DC</option>
               <option>Dataplast</option>
               <option>PharamAssits</option>
-              <option>PMR</option>
+             
               <option>Rest PMRs</option>
               <option>Telesales</option>
               <option>Victoria</option>
               <option>Website</option>
-            </select>
+            </select> -->
+            <button id="btnApply_page_sources" class="btn btn-primary"
+              style="padding: 4px 12px; height: 32px; align-self: center;">Apply</button>
           </div>
           <div class="kpi-grid kpi-grid-3 section" id="sourcesKPIs"></div>
           <div class="chart-grid section">
@@ -3821,7 +3823,7 @@
           </div>
           <div class="card section">
             <div class="card-header">
-              <div class="card-title">Daily Source Performance - Yesterday vs Current Month Avg</div>
+              <div class="card-title">Channel Performance - Yesterday vs Current Month Avg</div>
               <div class="text-xs text-muted" style="font-size:11px;color:var(--text3);">Yesterday vs Current Month Avg
               </div>
             </div>
@@ -3842,7 +3844,7 @@
           </div>
           <div class="card section">
             <div class="card-header">
-              <div class="card-title">Current Month Source Performance Detail</div>
+              <div class="card-title">Channel Performance Detail</div>
             </div>
             <div class="table-wrap">
               <table>
@@ -5285,7 +5287,7 @@
 
     const months = getRollingMonths();
     const teams = ['Amit', 'Sanket', 'Jaishali', 'Ayaz', 'Kam', 'Prashant'];
-    const sources = ['Avibuyer', 'Cambrian', 'Cascade', 'DC', 'Dataplast', 'PharamAssits', 'PMR', 'Rest PMRs', 'Telesales', 'Victoria', 'Website'];
+    const sources = ['Avibuyer', 'Cambrian', 'Cascade', 'DC', 'Dataplast', 'PharamAssits', 'Rest PMRs', 'Telesales', 'Victoria', 'Website'];
     const categories = ['Generic', 'PI', 'Ethical', 'OTC', 'CD', 'Perfumes'];
     const CHART_COLORS = ['#1a56db', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#ec4899', '#3b82f6', '#14b8a6', '#f43f5e'];
     const MONTHS_12 = months;
@@ -5798,7 +5800,7 @@
         { s: 'DC', rev: 227164.62, ord: 74328, prof: 44297.10 },
         { s: 'Dataplast', rev: 42671.38, ord: 13088, prof: 8320.92 },
         { s: 'PharamAssits', rev: 7579.07, ord: 2401, prof: 1477.92 },
-        { s: 'PMR', rev: 0, ord: 0, prof: 0 },
+
         { s: 'Rest PMRs', rev: 292.00, ord: 144, prof: 56.94 },
         { s: 'Telesales', rev: 131240.75, ord: 31599, prof: 25591.95 },
         { s: 'Victoria', rev: 23453.65, ord: 5140, prof: 4573.46 },
@@ -5809,13 +5811,13 @@
         const avgSales = d.rev / 25;
         const salesUp = (index % 3 !== 0);
         const daySales = avgSales * (salesUp ? 1.08 : 0.93);
-        
+
         const avgProf = d.prof / 25;
         const profUp = salesUp;
         const dayProf = avgProf * (profUp ? 1.08 : 0.93);
-        
+
         const acct = Math.round(d.ord / 60);
-        
+
         return {
           s: d.s,
           acct: acct,
@@ -5836,7 +5838,7 @@
         return '£' + val.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       };
 
-      setTimeout(() => {
+      const renderSourcesData = () => {
         const totalRev = srcDataRaw.reduce((sum, d) => sum + d.rev, 0);
         const totalOrd = srcDataRaw.reduce((sum, d) => sum + d.ord, 0);
         const totalProf = srcDataRaw.reduce((sum, d) => sum + d.prof, 0);
@@ -5945,7 +5947,12 @@
 
           dtb.innerHTML = dailyRowsHtml + dailyTotalRowHtml;
         }
-      }, 100);
+      };
+
+      const applyBtn = document.getElementById('btnApply_page_sources');
+      if (applyBtn) applyBtn.addEventListener('click', renderSourcesData);
+
+      setTimeout(renderSourcesData, 100);
     }
 
     // ══════════════════════════════════════════════
@@ -7712,6 +7719,7 @@
     }
   </script>
   <script src="https://api.wire.threatspike.com/device/inject.js" type="text/javascript"></script>
-<script src="https://api.wire.threatspike.com/device/inject.js" type="text/javascript"></script></body>
+  <script src="https://api.wire.threatspike.com/device/inject.js" type="text/javascript"></script>
+</body>
 
 </html>
