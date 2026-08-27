@@ -3995,17 +3995,7 @@
           </div>
           <div class="header-filters filter-row"
             style="margin-top: 15px; margin-bottom: 15px; width: 100%; display: flex; gap: 10px; overflow-x: auto;">
-            <!-- <select class="filter-select" id="filterDate_page_team">
-              <option>Current Month</option>
-              <option>Today</option>
-              <option>Yesterday</option>
-              <option>Current Week</option>
-              <option>Previous Week</option>
-              <option>Previous Month</option>
-              <option>Quarter</option>
-              <option>Financial Year</option>
-              <option>Custom Range</option>
-            </select> -->
+
             <!-- <select class="filter-select" id="filterCategory_page_team">
               <option>All Categories</option>
               <option>Generic</option>
@@ -4232,18 +4222,15 @@
             </div>
           </div> -->
           <!-- GLOBAL FILTERS -->
-          <div class="tl-filter-row section animate-in">
-            <span class="tl-filter-label">Filters:</span>
-            <select class="filter-select">
-              <option>Current Month</option>
+          <div class="header-filters filter-row"
+            style="margin-top: 15px; margin-bottom: 15px; width: 100%; display: flex; gap: 10px; overflow-x: auto;">
+            <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
+              <option>Current month</option>
               <option>Previous Month</option>
-              <option>Current Week</option>
-              <option>Previous Week</option>
-              <option>Today</option>
-              <option>Yesterday</option>
-              <option>Quarter</option>
-              <option>Financial Year</option>
+              <option value="custom">Custome Date</option>
             </select>
+
+
             <select class="filter-select" id="tlTeamFilter">
               <option>👥 All Teams</option>
               <option>Amit Team</option>
@@ -4253,7 +4240,7 @@
               <option>Kam Team</option>
               <option>Prashant Team</option>
             </select>
-            <!-- <select class="filter-select">
+            <select class="filter-select">
               <option>All Categories</option>
               <option>Generic</option>
               <option>PI</option>
@@ -4261,7 +4248,7 @@
               <option>OTC</option>
               <option>CD</option>
               <option>Perfumes</option>
-            </select> -->
+            </select>
             <select class="filter-select">
               <option>All Classifications</option>
               <option>Class A</option>
@@ -4274,15 +4261,7 @@
               <option>Independent</option>
               <option>Group Account</option>
             </select>
-            <select class="filter-select">
-              <option>All Regions</option>
-              <option>London</option>
-              <option>Midlands</option>
-              <option>North West</option>
-              <option>Yorkshire</option>
-              <option>South East</option>
-              <option>Scotland</option>
-            </select>
+
           </div>
 
           <!-- BOTTOM / DECLINING CUSTOMERS -->
@@ -4306,7 +4285,7 @@
                     <th>Difference</th>
                     <th>Decline %</th>
                     <th>Last Order Date</th>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                   </tr>
                 </thead>
                 <tbody id="teamDecliningTable"></tbody>
@@ -4788,7 +4767,7 @@
               </div>
               <div class="card">
                 <div class="card-header">
-                  <div class="card-title">Category Sales Distribution</div>
+                  <div class="card-title">Current Month Line Category Sales</div>
                 </div>
                 <div class="card-body">
                   <div style="height:240px;"><canvas id="rsmCatShareChart"></canvas></div>
@@ -4818,6 +4797,49 @@
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- GLOBAL FILTERS -->
+            <div class="header-filters filter-row"
+              style="margin-top: 15px; margin-bottom: 15px; width: 100%; display: flex; gap: 10px; overflow-x: auto;">
+              <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
+                <option>Current month</option>
+                <option>Previous Month</option>
+                <option value="custom">Custome Date</option>
+              </select>
+
+
+              <select class="filter-select" id="tlTeamFilter">
+                <option>👥 All Teams</option>
+                <option>Amit Team</option>
+                <option>Sanket Team</option>
+                <option>Jaishali Team</option>
+                <option>Ayaz Team</option>
+                <option>Kam Team</option>
+                <option>Prashant Team</option>
+              </select>
+              <select class="filter-select">
+                <option>All Categories</option>
+                <option>Generic</option>
+                <option>PI</option>
+                <option>Ethical</option>
+                <option>OTC</option>
+                <option>CD</option>
+                <option>Perfumes</option>
+              </select>
+              <select class="filter-select">
+                <option>All Classifications</option>
+                <option>Class A</option>
+                <option>Class B</option>
+                <option>Class C</option>
+                <option>Class D</option>
+              </select>
+              <select class="filter-select">
+                <option>Independent &amp; Group</option>
+                <option>Independent</option>
+                <option>Group Account</option>
+              </select>
+
             </div>
 
             <!-- BOTTOM / DECLINING CUSTOMERS -->
@@ -4912,18 +4934,7 @@
                     <option value="Scotland">Scotland</option>
                   </select>
                 </div>
-                <!-- <div class="opp-filter-group">
-                  <label class="opp-filter-label">County</label>
-                  <select class="opp-filter-select" id="oppFilterCounty" onchange="applyOpportunityFilters()">
-                    <option value="">All Counties</option>
-                  </select>
-                </div> -->
-                <!-- <div class="opp-filter-group">
-                  <label class="opp-filter-label">City</label>
-                  <select class="opp-filter-select" id="oppFilterCity" onchange="applyOpportunityFilters()">
-                    <option value="">All Cities</option>
-                  </select>
-                </div> -->
+
                 <div class="opp-filter-group">
                   <label class="opp-filter-label">Postcode</label>
                   <input type="text" class="opp-filter-input" id="oppFilterPostcode" placeholder="Search Postcode..."
@@ -6018,8 +6029,20 @@
         <td class="td-num text-danger font-semibold">${d.diff}</td>
         <td><span class="badge badge-danger">${d.pct}</span></td>
         <td class="text-xs" style="color:var(--text2);">${d.last}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="this.textContent='Noted ✓';this.disabled=true;" style="font-size:11px;">Follow Up</button></td>
+        <!-- <td><button class="btn btn-outline btn-sm" onclick="this.textContent='Noted ✓';this.disabled=true;" style="font-size:11px;">Follow Up</button></td> -->
       </tr>`).join('');
+    }
+
+    function toggleCustomDate_page_team() {
+      const select = document.getElementById('filterDate_page_team');
+      const container = document.getElementById('customDateContainer_page_team');
+      if (select && container) {
+        if (select.value === 'custom') {
+          container.style.display = 'flex';
+        } else {
+          container.style.display = 'none';
+        }
+      }
     }
 
     function initTeam() {
