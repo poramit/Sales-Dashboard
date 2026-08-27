@@ -4861,7 +4861,6 @@
                       <th>Current Month Sales</th>
                       <th>Difference</th>
                       <th>Decline %</th>
-                      <th>Last Order Date</th>
                     </tr>
                   </thead>
                   <tbody id="rsmDecliningTable"></tbody>
@@ -4892,7 +4891,6 @@
                       <th>Top 100 PI</th>
                       <th>Total Sales</th>
                       <th>Gross Profit</th>
-                      <th>Last Purchase</th>
                     </tr>
                   </thead>
                   <tbody id="rsmTopTable"></tbody>
@@ -6522,7 +6520,6 @@
         <td class="td-num">${r.top100pi}</td>
         <td class="td-num font-bold">${r.sales}</td>
         <td class="td-num">${r.gp}</td>
-        <td class="text-xs" style="color:var(--text2);">${r.last}</td>
       </tr>`).join('');
     }
 
@@ -6609,7 +6606,7 @@
         ];
         const catTableEl = document.getElementById('rsmCatTable');
         if (catTableEl) {
-          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month Average</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
             catDefs.map(r => `<tr><td>${r.name}</td><td class="td-num">${r.avg3m}</td><td class="td-num">${r.sales}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
@@ -6623,7 +6620,7 @@
         ];
         const compTableEl = document.getElementById('rsmCompTable');
         if (compTableEl) {
-          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Avg of prev 3 Month</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Prev 3 Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
             compMetrics.map(r => `<tr><td>${r.l}</td><td class="td-num">${r.prev}</td><td class="td-num">${r.cur}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
@@ -6744,7 +6741,6 @@
           <td class="td-num">${d.cur}</td>
           <td class="td-num text-danger font-semibold">${d.diff}</td>
           <td><span class="badge badge-danger">${d.pct}</span></td>
-          <td class="text-xs" style="color:var(--text2);">${d.last}</td>
          
         </tr>`).join('');
 
