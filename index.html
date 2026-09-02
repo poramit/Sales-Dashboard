@@ -4279,9 +4279,10 @@
                 <thead>
                   <tr>
                     <th>Customer Name</th>
+                    <th>Acc No.</th>
                     <th>Team</th>
                     <th>Prev Month Sales</th>
-                    <th>Current Month Sales</th>
+                    <th>Current Month <br>Projected Sales</th>
                     <th>Difference</th>
                     <th>Decline %</th>
                     <th>Last Order Date</th>
@@ -4315,7 +4316,7 @@
                     <th>Top 100 PI</th>
                     <th>Total Sales</th>
                     <th>Gross Profit</th>
-                    <th>Last Purchase</th>
+                    <th>Last Order Date</th>
                   </tr>
                 </thead>
                 <tbody id="teamTopTable"></tbody>
@@ -4857,8 +4858,9 @@
                   <thead>
                     <tr>
                       <th>Customer Name</th>
+                      <th>Acc No.</th>
                       <th>Prev Month Sales</th>
-                      <th>Current Month Sales</th>
+                      <th>Current Month <br>Projected Sales</th>
                       <th>Difference</th>
                       <th>Decline %</th>
                     </tr>
@@ -6021,6 +6023,7 @@
       const filtered = teamDeclData.filter(r => r.name.toLowerCase().includes(q) || r.team.toLowerCase().includes(q));
       tbody.innerHTML = filtered.map((d, i) => `<tr class="tl-declining-row">
         <td class="font-semibold">${d.name}</td>
+        <td><span class="badge badge-primary">${d.acct || 'N/A'}</span></td>
         <td><span class="badge badge-purple">${d.team}</span></td>
         <td class="td-num">${d.prev}</td>
         <td class="td-num">${d.cur}</td>
@@ -6225,11 +6228,11 @@
 
         // ── Declining Customers ──
         teamDeclData = [
-          { name: 'Maple Pharmacy', team: 'Prashant', prev: '£12,840', cur: '£8,420', diff: '-£4,420', pct: '-34.4%', last: '02 Jul 2026' },
-          { name: 'QuickCure Ltd', team: 'Kam', prev: '£9,180', cur: '£6,240', diff: '-£2,940', pct: '-32.0%', last: '28 Jun 2026' },
-          { name: 'GreenLeaf Dispensary', team: 'Ayaz', prev: '£7,640', cur: '£5,380', diff: '-£2,260', pct: '-29.6%', last: '05 Jul 2026' },
-          { name: 'Central Care Chemist', team: 'Jaishali', prev: '£11,200', cur: '£8,120', diff: '-£3,080', pct: '-27.5%', last: '10 Jul 2026' },
-          { name: 'Harmony Health', team: 'Sanket', prev: '£6,840', cur: '£5,020', diff: '-£1,820', pct: '-26.6%', last: '01 Jul 2026' },
+          { name: 'Maple Pharmacy', acct: 'ACC-0432', team: 'Prashant', prev: '£12,840', cur: '£8,420', diff: '-£4,420', pct: '-34.4%', last: '02 Jul 2026' },
+          { name: 'QuickCure Ltd', acct: 'ACC-0211', team: 'Kam', prev: '£9,180', cur: '£6,240', diff: '-£2,940', pct: '-32.0%', last: '28 Jun 2026' },
+          { name: 'GreenLeaf Dispensary', acct: 'ACC-0158', team: 'Ayaz', prev: '£7,640', cur: '£5,380', diff: '-£2,260', pct: '-29.6%', last: '05 Jul 2026' },
+          { name: 'Central Care Chemist', acct: 'ACC-0731', team: 'Jaishali', prev: '£11,200', cur: '£8,120', diff: '-£3,080', pct: '-27.5%', last: '10 Jul 2026' },
+          { name: 'Harmony Health', acct: 'ACC-0504', team: 'Sanket', prev: '£6,840', cur: '£5,020', diff: '-£1,820', pct: '-26.6%', last: '01 Jul 2026' },
         ];
         teamFilterBotTable('');
 
@@ -6728,15 +6731,16 @@
 
         // ── Declining Customers ──
         const declData = [
-          { name: 'Maple Pharmacy', prev: '£12,840', cur: '£8,420', diff: '-£4,420', pct: '-34.4%', last: '02 Jul 2026' },
-          { name: 'QuickCure Ltd', prev: '£9,180', cur: '£6,240', diff: '-£2,940', pct: '-32.0%', last: '28 Jun 2026' },
-          { name: 'GreenLeaf Dispensary', prev: '£7,640', cur: '£5,380', diff: '-£2,260', pct: '-29.6%', last: '05 Jul 2026' },
-          { name: 'Central Care Chemist', prev: '£11,200', cur: '£8,120', diff: '-£3,080', pct: '-27.5%', last: '10 Jul 2026' },
-          { name: 'Harmony Health', prev: '£6,840', cur: '£5,020', diff: '-£1,820', pct: '-26.6%', last: '01 Jul 2026' },
+          { name: 'Maple Pharmacy', acct: 'ACC-0432', prev: '£12,840', cur: '£8,420', diff: '-£4,420', pct: '-34.4%', last: '02 Jul 2026' },
+          { name: 'QuickCure Ltd', acct: 'ACC-0211', prev: '£9,180', cur: '£6,240', diff: '-£2,940', pct: '-32.0%', last: '28 Jun 2026' },
+          { name: 'GreenLeaf Dispensary', acct: 'ACC-0158', prev: '£7,640', cur: '£5,380', diff: '-£2,260', pct: '-29.6%', last: '05 Jul 2026' },
+          { name: 'Central Care Chemist', acct: 'ACC-0731', prev: '£11,200', cur: '£8,120', diff: '-£3,080', pct: '-27.5%', last: '10 Jul 2026' },
+          { name: 'Harmony Health', acct: 'ACC-0504', prev: '£6,840', cur: '£5,020', diff: '-£1,820', pct: '-26.6%', last: '01 Jul 2026' },
         ];
         const declEl = document.getElementById('rsmDecliningTable');
         if (declEl) declEl.innerHTML = declData.map(d => `<tr class="declining-row">
           <td class="font-semibold">${d.name}</td>
+          <td><span class="badge badge-primary">${d.acct || 'N/A'}</span></td>
           <td class="td-num">${d.prev}</td>
           <td class="td-num">${d.cur}</td>
           <td class="td-num text-danger font-semibold">${d.diff}</td>
