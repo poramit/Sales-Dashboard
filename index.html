@@ -4188,7 +4188,7 @@
 
             <div class="card" style="margin-top: 24px;">
               <div class="card-header">
-                <div class="card-title">TL performance Analysis — Current Month vs 3 Month Average</div>
+                <div class="card-title">TL performance Analysis — 3 Month Avg V/S Current Month Avg </div>
               </div>
               <div class="card-body">
                 <div style="height:240px;"><canvas id="teamCompChart"></canvas></div>
@@ -4224,11 +4224,11 @@
           <!-- GLOBAL FILTERS -->
           <div class="header-filters filter-row"
             style="margin-top: 15px; margin-bottom: 15px; width: 100%; display: flex; gap: 10px; overflow-x: auto;">
-            <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
+            <!-- <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
               <option>Current month</option>
               <option>Previous Month</option>
               <option value="custom">Custome Date</option>
-            </select>
+            </select> -->
 
 
             <select class="filter-select" id="tlTeamFilter">
@@ -4802,11 +4802,11 @@
             <!-- GLOBAL FILTERS -->
             <div class="header-filters filter-row"
               style="margin-top: 15px; margin-bottom: 15px; width: 100%; display: flex; gap: 10px; overflow-x: auto;">
-              <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
+              <!-- <select class="filter-select" id="filterDate_page_team" onchange="toggleCustomDate_page_team()">
                 <option>Current month</option>
                 <option>Previous Month</option>
                 <option value="custom">Custome Date</option>
-              </select>
+              </select> -->
 
 
               <select class="filter-select" id="tlTeamFilter">
@@ -6156,8 +6156,8 @@
           {
             label: 'Current Month',
             data: teamData.map(t => t.revN),
-            backgroundColor: teamData.map(t => t.revN < t.prev3m ? '#ef4444cc' : '#1a56dbcc'),
-            borderColor: teamData.map(t => t.revN < t.prev3m ? '#ef4444' : '#1a56db'),
+            backgroundColor: teamData.map(t => t.revN < t.prev3m ? '#ef4444cc' : '#10b981cc'),
+            borderColor: teamData.map(t => t.revN < t.prev3m ? '#ef4444' : '#10b981'),
             borderWidth: 0,
             borderRadius: 4,
             borderSkipped: false
