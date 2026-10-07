@@ -3811,6 +3811,27 @@
               style="padding: 4px 12px; height: 32px; align-self: center;">Apply</button>
           </div>
           <div class="kpi-grid kpi-grid-3 section" id="sourcesKPIs"></div>
+
+          <!-- MONTH ON MONTH SALES BAR CHART -->
+          <div class="section animate-in" style="margin-top: 16px;">
+            <div class="card">
+              <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;">
+                <div>
+                  <div class="card-title">Month-on-Month Sales</div>
+                  <div style="font-size: 11px; color: var(--text3); margin-top: 2px;">Monthly sales tracking &middot; Green = Increased vs Prev Month | Red = Decreased vs Prev Month</div>
+                </div>
+                <div style="display: flex; gap: 14px; align-items: center; font-size: 12px; font-weight: 500;">
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #10b981; display: inline-block;"></span> Increased vs Prev Month</span>
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #ef4444; display: inline-block;"></span> Decreased vs Prev Month</span>
+                </div>
+              </div>
+              <div class="card-body" style="padding: 16px 20px;">
+                <div style="height: 280px; position: relative;">
+                  <canvas id="sourcesMoMSalesChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="chart-grid section">
             <div class="card">
               <div class="card-header">
@@ -4082,6 +4103,32 @@
 
           <!-- KPI ROW -->
           <div class="kpi-grid kpi-grid-4 section" id="teamKPIs"></div>
+
+          <!-- OLD V/S NEW MONTH ON MONTH SALES BAR CHART -->
+          <div class="section animate-in" style="margin-top: 16px;">
+            <div class="card">
+              <div class="card-header"
+                style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;">
+                <div>
+                  <div class="card-title">Old V/S New Month-on-Month Sales</div>
+                  <div style="font-size: 11px; color: var(--text3); margin-top: 2px;">Month-on-month sales comparison for Old and New Accounts</div>
+                </div>
+                <div style="display: flex; gap: 14px; align-items: center; font-size: 12px; font-weight: 500;">
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><span
+                      style="width: 10px; height: 10px; border-radius: 2px; background: #10b981; display: inline-block;"></span>
+                    Increased vs Prev Month</span>
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><span
+                      style="width: 10px; height: 10px; border-radius: 2px; background: #ef4444; display: inline-block;"></span>
+                    Decreased vs Prev Month</span>
+                </div>
+              </div>
+              <div class="card-body" style="padding: 16px 20px;">
+                <div style="height: 280px; position: relative;">
+                  <canvas id="teamMoMSalesChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- AVG SALES CHART + TARGET GAUGE -->
           <!-- <div class="chart-grid chart-grid-12 section">
@@ -4729,7 +4776,33 @@
             </div>
 
             <!-- KPI ROW -->
-            <div class="kpi-grid kpi-grid-4 section" id="rsmKPIs"></div>
+            <div class="kpi-grid kpi-grid-6 section" id="rsmKPIs"></div>
+
+            <!-- OLD V/S NEW MONTH ON MONTH SALES BAR CHART -->
+            <div class="section animate-in" style="margin-top: 16px;">
+              <div class="card">
+                <div class="card-header"
+                  style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;">
+                  <div>
+                    <div class="card-title">Old V/S New Month-on-Month Sales</div>
+                    <div style="font-size: 11px; color: var(--text3); margin-top: 2px;">Month-on-month sales comparison for Old and New Accounts</div>
+                  </div>
+                  <div style="display: flex; gap: 14px; align-items: center; font-size: 12px; font-weight: 500;">
+                    <span style="display: inline-flex; align-items: center; gap: 6px;"><span
+                        style="width: 10px; height: 10px; border-radius: 2px; background: #10b981; display: inline-block;"></span>
+                      Increased vs Prev Month</span>
+                    <span style="display: inline-flex; align-items: center; gap: 6px;"><span
+                        style="width: 10px; height: 10px; border-radius: 2px; background: #ef4444; display: inline-block;"></span>
+                      Decreased vs Prev Month</span>
+                  </div>
+                </div>
+                <div class="card-body" style="padding: 16px 20px;">
+                  <div style="height: 280px; position: relative;">
+                    <canvas id="rsmMoMSalesChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- PRODUCT CATEGORY SALES & COMPARISON TABLES -->
             <div class="chart-grid chart-grid-2 section">
               <!-- Left: Category Table -->
@@ -5958,6 +6031,70 @@
 
           dtb.innerHTML = dailyRowsHtml + dailyTotalRowHtml;
         }
+
+        // ── Month on Month Sales Bar Chart ──
+        const sourcesMomSalesEl = document.getElementById('sourcesMoMSalesChart');
+        if (sourcesMomSalesEl) {
+          const existingChart = Chart.getChart(sourcesMomSalesEl);
+          if (existingChart) existingChart.destroy();
+
+          const momMonths = getRollingMonths();
+          const momSalesValues = [480, 505, 490, 535, 520, 560, 585, 570, 605, 590, 615, 595, 610];
+
+          // Logic: if previous month sales > current month sales -> Red, else -> Green
+          const barColors = momSalesValues.map((val, i) => {
+            if (i === 0) return '#10b981';
+            return momSalesValues[i - 1] > val ? '#ef4444' : '#10b981';
+          });
+
+          new Chart(sourcesMomSalesEl, {
+            type: 'bar',
+            data: {
+              labels: momMonths,
+              datasets: [{
+                label: 'Sales Amount (£K)',
+                data: momSalesValues,
+                backgroundColor: barColors,
+                borderRadius: 4,
+                borderWidth: 0,
+                maxBarThickness: 42
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  backgroundColor: '#1e293b',
+                  titleFont: { family: 'Inter', size: 12 },
+                  bodyFont: { family: 'Inter', size: 12 },
+                  padding: 12,
+                  cornerRadius: 8,
+                  callbacks: {
+                    label: function (ctx) {
+                      return ` Sales Amount: £${ctx.raw}K`;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  grid: { display: false },
+                  ticks: { font: { family: 'Inter', size: 11 }, color: '#64748b' }
+                },
+                y: {
+                  grid: { color: '#f1f5f9' },
+                  ticks: {
+                    font: { family: 'Inter', size: 11 },
+                    color: '#94a3b8',
+                    callback: function (val) { return '£' + val + 'K'; }
+                  }
+                }
+              }
+            }
+          });
+        }
       };
 
       const applyBtn = document.getElementById('btnApply_page_sources');
@@ -6076,6 +6213,86 @@
       ].join('');
 
       setTimeout(() => {
+        // ── Old V/S New Month on Month Sales Bar Chart ──
+        const momSalesEl = document.getElementById('teamMoMSalesChart');
+        if (momSalesEl) {
+          const existingChart = Chart.getChart(momSalesEl);
+          if (existingChart) existingChart.destroy();
+
+          const momMonths = getRollingMonths();
+          const oldSalesData = [3.50, 3.70, 3.55, 3.90, 3.75, 4.05, 4.25, 4.10, 4.35, 4.20, 4.45, 4.30, 4.50];
+          const newSalesData = [0.65, 0.68, 0.70, 0.80, 0.75, 0.85, 0.90, 0.85, 0.90, 0.88, 0.93, 0.89, 0.95];
+
+          // Green if current month >= previous month, Red if current month < previous month (for Old & New Accounts)
+          const oldColors = oldSalesData.map((val, i) => {
+            if (i === 0) return '#10b981';
+            return oldSalesData[i - 1] > val ? '#ef4444' : '#10b981';
+          });
+
+          const newColors = newSalesData.map((val, i) => {
+            if (i === 0) return '#10b981';
+            return newSalesData[i - 1] > val ? '#ef4444' : '#10b981';
+          });
+
+          new Chart(momSalesEl, {
+            type: 'bar',
+            data: {
+              labels: momMonths,
+              datasets: [
+                {
+                  label: 'Old Account',
+                  data: oldSalesData,
+                  backgroundColor: oldColors,
+                  borderRadius: 4,
+                  borderWidth: 0,
+                  maxBarThickness: 32
+                },
+                {
+                  label: 'New Account',
+                  data: newSalesData,
+                  backgroundColor: newColors,
+                  borderRadius: 4,
+                  borderWidth: 0,
+                  maxBarThickness: 32
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  backgroundColor: '#1e293b',
+                  titleFont: { family: 'Inter', size: 12 },
+                  bodyFont: { family: 'Inter', size: 12 },
+                  padding: 12,
+                  cornerRadius: 8,
+                  callbacks: {
+                    label: function (ctx) {
+                      return ` ${ctx.dataset.label}: £${ctx.raw}M`;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  grid: { display: false },
+                  ticks: { font: { family: 'Inter', size: 11 }, color: '#64748b' }
+                },
+                y: {
+                  grid: { color: '#f1f5f9' },
+                  ticks: {
+                    font: { family: 'Inter', size: 11 },
+                    color: '#94a3b8',
+                    callback: function (val) { return '£' + val + 'M'; }
+                  }
+                }
+              }
+            }
+          });
+        }
+
         // ── Avg Sales Chart ──
         const avgSalesEl = document.getElementById('teamAvgSalesChart');
         if (avgSalesEl) new Chart(avgSalesEl, {
@@ -6536,6 +6753,8 @@
       const kpiEl = document.getElementById('rsmKPIs');
       if (kpiEl) kpiEl.innerHTML = [
         buildKPI('Total Active Accounts', '1,284', 'blue'),
+        buildKPI('Spending Account', '1,000', 'green'),
+        buildKPI('Non-Spending Account', '284', 'red'),
         `<div class="kpi-card green" onclick="this.style.transform='scale(0.98)';setTimeout(()=>this.style.transform='',100)">
           <div class="kpi-label">New Account Opens</div>
           <div style="display:flex; align-items:center;">
@@ -6558,6 +6777,86 @@
       ].join('');
 
       setTimeout(() => {
+        // ── Old V/S New Month on Month Sales Bar Chart ──
+        const rsmMomSalesEl = document.getElementById('rsmMoMSalesChart');
+        if (rsmMomSalesEl) {
+          const existingChart = Chart.getChart(rsmMomSalesEl);
+          if (existingChart) existingChart.destroy();
+
+          const momMonths = getRollingMonths();
+          const oldSalesData = [390, 410, 395, 430, 415, 445, 460, 450, 470, 455, 475, 460, 464];
+          const newSalesData = [70, 75, 72, 80, 78, 85, 90, 84, 90, 87, 95, 90, 92];
+
+          // Green if current month >= previous month, Red if current month < previous month (for Old & New Accounts)
+          const oldColors = oldSalesData.map((val, i) => {
+            if (i === 0) return '#10b981';
+            return oldSalesData[i - 1] > val ? '#ef4444' : '#10b981';
+          });
+
+          const newColors = newSalesData.map((val, i) => {
+            if (i === 0) return '#10b981';
+            return newSalesData[i - 1] > val ? '#ef4444' : '#10b981';
+          });
+
+          new Chart(rsmMomSalesEl, {
+            type: 'bar',
+            data: {
+              labels: momMonths,
+              datasets: [
+                {
+                  label: 'Old Account',
+                  data: oldSalesData,
+                  backgroundColor: oldColors,
+                  borderRadius: 4,
+                  borderWidth: 0,
+                  maxBarThickness: 32
+                },
+                {
+                  label: 'New Account',
+                  data: newSalesData,
+                  backgroundColor: newColors,
+                  borderRadius: 4,
+                  borderWidth: 0,
+                  maxBarThickness: 32
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  backgroundColor: '#1e293b',
+                  titleFont: { family: 'Inter', size: 12 },
+                  bodyFont: { family: 'Inter', size: 12 },
+                  padding: 12,
+                  cornerRadius: 8,
+                  callbacks: {
+                    label: function (ctx) {
+                      return ` ${ctx.dataset.label}: £${ctx.raw}K`;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  grid: { display: false },
+                  ticks: { font: { family: 'Inter', size: 11 }, color: '#64748b' }
+                },
+                y: {
+                  grid: { color: '#f1f5f9' },
+                  ticks: {
+                    font: { family: 'Inter', size: 11 },
+                    color: '#94a3b8',
+                    callback: function (val) { return '£' + val + 'K'; }
+                  }
+                }
+              }
+            }
+          });
+        }
+
         // ── 3-Month Average vs Current Month Average Sales ──
         const avgSalesEl = document.getElementById('rsmAvgSalesChart');
         if (avgSalesEl) new Chart(avgSalesEl, {
@@ -6598,33 +6897,33 @@
 
         // ── Category Table ──
         const catDefs = [
-          { name: 'Generic', sales: '£284K', avg3m: '£242K', diff: '+£42K', s: 'positive' },
-          { name: 'Ethical', sales: '£82K', avg3m: '£69K', diff: '+£13K', s: 'positive' },
-          { name: 'PI', sales: '£48K', avg3m: '£41K', diff: '+£7K', s: 'positive' },
-          { name: 'OTC', sales: '£68K', avg3m: '£55K', diff: '+£13K', s: 'positive' },
-          { name: 'CD', sales: '£38K', avg3m: '£42K', diff: '-£4K', s: 'negative' },
-          { name: 'Perfumes', sales: '£36K', avg3m: '£44K', diff: '-£8K', s: 'negative' },
-          { name: 'Total Sales', sales: '£556K', avg3m: '£493K', diff: '+£63K', s: 'positive' },
-          { name: 'Syri Sales', sales: '£122K', avg3m: '£120K', diff: '+£20K', s: 'positive' },
+          { name: 'Generic', sales: '£284K', lastm: '£260K', avg3m: '£242K', diff: '+£42K', s: 'positive' },
+          { name: 'Ethical', sales: '£82K', lastm: '£74K', avg3m: '£69K', diff: '+£13K', s: 'positive' },
+          { name: 'PI', sales: '£48K', lastm: '£44K', avg3m: '£41K', diff: '+£7K', s: 'positive' },
+          { name: 'OTC', sales: '£68K', lastm: '£60K', avg3m: '£55K', diff: '+£13K', s: 'positive' },
+          { name: 'CD', sales: '£38K', lastm: '£40K', avg3m: '£42K', diff: '-£4K', s: 'negative' },
+          { name: 'Perfumes', sales: '£36K', lastm: '£39K', avg3m: '£44K', diff: '-£8K', s: 'negative' },
+          { name: 'Total Sales', sales: '£556K', lastm: '£517K', avg3m: '£493K', diff: '+£63K', s: 'positive' },
+          { name: 'Syri Sales', sales: '£122K', lastm: '£121K', avg3m: '£120K', diff: '+£20K', s: 'positive' },
         ];
         const catTableEl = document.getElementById('rsmCatTable');
         if (catTableEl) {
-          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
-            catDefs.map(r => `<tr><td>${r.name}</td><td class="td-num">${r.avg3m}</td><td class="td-num">${r.sales}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
+          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month<br>Daily Avg</th><th>Last Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+            catDefs.map(r => `<tr><td>${r.name}</td><td class="td-num">${r.avg3m}</td><td class="td-num">${r.lastm}</td><td class="td-num">${r.sales}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
         // ── Sales Comparison Table ──
         const compMetrics = [
-          { l: 'Sales', cur: '£556K', prev: '£487K', diff: '+£69K', s: 'positive' },
-          { l: 'Boxes Sold', cur: '24,820', prev: '21,600', diff: '+3,220', s: 'positive' },
-          { l: 'Gross Profit', cur: '£111K', prev: '£96K', diff: '+£15K', s: 'positive' },
-          { l: 'Gross Margin', cur: '19.9%', prev: '19.7%', diff: '+0.2%', s: 'positive' },
-          { l: 'Syri Sales', cur: '£122K', prev: '£120K', diff: '+£20K', s: 'positive' },
+          { l: 'Sales', cur: '£556K', lastm: '£517K', prev: '£487K', diff: '+£69K', s: 'positive' },
+          { l: 'Boxes Sold', cur: '24,820', lastm: '23,100', prev: '21,600', diff: '+3,220', s: 'positive' },
+          { l: 'Gross Profit', cur: '£111K', lastm: '£103K', prev: '£96K', diff: '+£15K', s: 'positive' },
+          { l: 'Gross Margin', cur: '19.9%', lastm: '19.8%', prev: '19.7%', diff: '+0.2%', s: 'positive' },
+          { l: 'Syri Sales', cur: '£122K', lastm: '£121K', prev: '£120K', diff: '+£20K', s: 'positive' },
         ];
         const compTableEl = document.getElementById('rsmCompTable');
         if (compTableEl) {
-          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Prev 3 Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
-            compMetrics.map(r => `<tr><td>${r.l}</td><td class="td-num">${r.prev}</td><td class="td-num">${r.cur}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
+          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Prev 3 Month<br>Daily Avg</th><th>Last Month<br>Daily Avg</th><th>Current Month<br>Daily Avg</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+            compMetrics.map(r => `<tr><td>${r.l}</td><td class="td-num">${r.prev}</td><td class="td-num">${r.lastm}</td><td class="td-num">${r.cur}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
         // ── Category Bar Chart ──
