@@ -6330,19 +6330,19 @@
 
         // ── Category Table ──
         const catDefs = [
-          { name: 'Generic', sales: '£2.78M', avg3m: '£2.66M', diff: '+£120K', s: 'positive' },
-          { name: 'Ethical', sales: '£802K', avg3m: '£790K', diff: '+£12K', s: 'positive' },
-          { name: 'PI', sales: '£468K', avg3m: '£448K', diff: '+£20K', s: 'positive' },
-          { name: 'OTC', sales: '£664K', avg3m: '£649K', diff: '+£15K', s: 'positive' },
-          { name: 'CD', sales: '£372K', avg3m: '£382K', diff: '-£10K', s: 'negative' },
-          { name: 'Perfumes', sales: '£362K', avg3m: '£357K', diff: '+£5K', s: 'positive' },
-          { name: 'Total Sales', sales: '£5.45M', avg3m: '£4.86M', diff: '+£590K', s: 'positive' },
-          { name: 'Syri Sales', sales: '£1.22M', avg3m: '£1.20M', diff: '+£0.20M', s: 'positive' },
+          { name: 'Generic', sales: '£2.78M', lastm: '£2.72M', avg3m: '£2.66M', diff: '+£120K', s: 'positive' },
+          { name: 'Ethical', sales: '£802K', lastm: '£796K', avg3m: '£790K', diff: '+£12K', s: 'positive' },
+          { name: 'PI', sales: '£468K', lastm: '£458K', avg3m: '£448K', diff: '+£20K', s: 'positive' },
+          { name: 'OTC', sales: '£664K', lastm: '£656K', avg3m: '£649K', diff: '+£15K', s: 'positive' },
+          { name: 'CD', sales: '£372K', lastm: '£376K', avg3m: '£382K', diff: '-£10K', s: 'negative' },
+          { name: 'Perfumes', sales: '£362K', lastm: '£360K', avg3m: '£357K', diff: '+£5K', s: 'positive' },
+          { name: 'Total Sales', sales: '£5.45M', lastm: '£5.18M', avg3m: '£4.86M', diff: '+£590K', s: 'positive' },
+          { name: 'Syri Sales', sales: '£1.22M', lastm: '£1.21M', avg3m: '£1.20M', diff: '+£0.20M', s: 'positive' },
         ];
         const catTableEl = document.getElementById('teamCatTable');
         if (catTableEl) {
-          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month Average</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
-            catDefs.map(r => `<tr><td>${r.name}</td><td class="td-num">${r.avg3m}</td><td class="td-num">${r.sales}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
+          catTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>3 Month Average</th><th>Last Month<br>Daily Avg</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+            catDefs.map(r => `<tr><td>${r.name}</td><td class="td-num">${r.avg3m}</td><td class="td-num">${r.lastm}</td><td class="td-num">${r.sales}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
         // ── Category Bar Chart ──
@@ -6358,16 +6358,16 @@
 
         // ── Sales Comparison Table ──
         const compMetrics = [
-          { l: 'Sales', cur: '£5.45M', prev: '£4.86M', diff: '+£590K', s: 'positive' },
-          { l: 'Boxes Sold', cur: '241K', prev: '212K', diff: '+29K', s: 'positive' },
-          { l: 'Gross Profit', cur: '£1.09M', prev: '£952K', diff: '+£138K', s: 'positive' },
-          { l: 'Gross Margin', cur: '20.0%', prev: '19.6%', diff: '+0.4pp', s: 'positive' },
-          { l: 'Syri Sales', cur: '£1.22M', prev: '£1.20M', diff: '+£0.20M', s: 'positive' },
+          { l: 'Sales', cur: '£5.45M', lastm: '£5.18M', prev: '£4.86M', diff: '+£590K', s: 'positive' },
+          { l: 'Boxes Sold', cur: '241K', lastm: '226K', prev: '212K', diff: '+29K', s: 'positive' },
+          { l: 'Gross Profit', cur: '£1.09M', lastm: '£1.02M', prev: '£952K', diff: '+£138K', s: 'positive' },
+          { l: 'Gross Margin', cur: '20.0%', lastm: '19.8%', prev: '19.6%', diff: '+0.4pp', s: 'positive' },
+          { l: 'Syri Sales', cur: '£1.22M', lastm: '£1.21M', prev: '£1.20M', diff: '+£0.20M', s: 'positive' },
         ];
         const compTableEl = document.getElementById('teamCompTable');
         if (compTableEl) {
-          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Avg of prev 3 Month</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
-            compMetrics.map(r => `<tr><td>${r.l}</td><td class="td-num">${r.prev}</td><td class="td-num">${r.cur}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
+          compTableEl.innerHTML = `<thead><tr><th>Matrix</th><th>Avg of prev 3 Month</th><th>Last Month<br>Daily Avg</th><th>Current month Average</th><th>Difference</th><th>Status</th></tr></thead><tbody>` +
+            compMetrics.map(r => `<tr><td>${r.l}</td><td class="td-num">${r.prev}</td><td class="td-num">${r.lastm}</td><td class="td-num">${r.cur}</td><td class="td-num ${r.s}">${r.diff}</td><td><span class="status-dot ${r.s === 'positive' ? 'green' : 'red'}"></span> ${r.s === 'positive' ? 'Better' : 'Below'}</td></tr>`).join('') + `</tbody>`;
         }
 
         // ── Comparison Grouped Bar ──
